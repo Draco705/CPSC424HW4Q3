@@ -187,7 +187,7 @@ void iteration(const struct sockaddr_in *serverAddr, char *domain, char *path, i
   if (debugFlag > 0) {
      printf("DONE with FIRST PASS,  content_length:%d , left to_read:%d, buffer_size:%d, totalRead:%d\n", (unsigned int)content_length,to_read, buffer_size, totalRead);
   }
-  if(content_length != 0 && totalRead == 0){
+
   while (content_length > 0) {
     if (debugFlag > 0) {
         printf("Before SECOND safe_recv, buf ptr:%p with to_read:%d, totalRead:%d  \n", buffer, to_read,totalRead);
@@ -208,11 +208,6 @@ void iteration(const struct sockaddr_in *serverAddr, char *domain, char *path, i
       die("error in recv()");
     }
     content_length -= r;
-  }
-  }
-
-  if(content_length == 0 && totalRead == 0){
-    r = safe_recv(sock, buffer, to_read);	
   }
 
   /* Stop clock */

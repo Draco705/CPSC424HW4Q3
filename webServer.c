@@ -101,13 +101,25 @@ int main(int argc, char** argv) {
 
          /* send dummy data */
          bzero(buf, BUFSIZE);
-         while (sent < size) {
-            if (write(cd, &buf, (size-sent >= BUFSIZE ? BUFSIZE : size-sent)) == -1) {
-               perror("write failed");
-               exit(EXIT_FAILURE);
-            }
-            sent += BUFSIZE;
-         }
+	 if(size != 0){
+             while (sent < size) {
+                if (write(cd, &buf, (size-sent >= BUFSIZE ? BUFSIZE : size-sent)) == -1) {
+                   perror("write failed");
+                   exit(EXIT_FAILURE);
+                }
+                sent += BUFSIZE;
+             }
+	 }
+
+	 if(size == 0){
+	     printf("Size is zero! Send it all!\n");
+	     while(1){
+	         if(write(cd, &buf, BUFSIZE) == -1){
+		     perror("Write failure");
+		     exit(EXIT_FAILURE);
+		 }
+	     }
+	 }
 
          /* close client socket descriptor and terminate child process */
          close(cd);
